@@ -24,5 +24,19 @@ def disconnected():
 def handle_message(data):
     print(f'Received message: {data}')
 
+    send("server sending the message!")
+
+@socketio.on('heard')
+def handle_heard(data):
+    print(f'Received heard: {data}')
+
+    emit('say', f'{data}')
+
+def broadcast():
+    socketio.emit('say', 'hello everyone')
+
+def send_message(client_id, data):
+    socketio.emit('output', data, room=clients[-1])
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000)
